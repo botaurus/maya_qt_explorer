@@ -18,6 +18,10 @@ class MayaQtExplorer(baseclass):
 		
 		self.setUnmanagedWidgets([self.gvars_list, self.info_te, self.current_widget_path])
 
+		#hide unused widgets for now
+		self.label_5.hide()
+		self.info_te.hide()
+		
 		self.gvars = explorer_utils.get_ui_gvars()
 		self.gvars = [" - ".join(x) for x in self.gvars]
 		self.gvars_list.clear()
@@ -92,7 +96,10 @@ class MayaQtExplorer(baseclass):
 			pass
 		if self.band is None:
 			self.band = QtGui.QRubberBand(QtGui.QRubberBand.Rectangle, self.maya_window)
-		rect = widget.geometry()
+		try:
+			rect = widget.geometry()
+		except:
+			return
 		pnt = widget.mapTo(self.maya_window, widget.geometry().topLeft())
 		rect.moveTo(pnt)
 		self.band.setGeometry(rect)
