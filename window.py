@@ -12,7 +12,7 @@ reload(explorer_utils)
 baseclass = qt.loadUiFile("window")
 
 class MayaQtExplorer(baseclass):
-	def __init__(self, parent = None):
+	def __init__(self, parent=qt.getMayaWindow()):
 		super(MayaQtExplorer, self).__init__(parent)
 		self.maya_window = parent
 		
@@ -34,7 +34,9 @@ class MayaQtExplorer(baseclass):
 		self.child_list.itemDoubleClicked.connect(self.ui_path_list_double_clicked)
 		self.search_gvars.textChanged.connect(self.search_changed)
 
-		self.band = None
+		self.parent_list.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+
+		self.band = QtGui.QRubberBand(QtGui.QRubberBand.Rectangle, qt.getMayaWindow())
 
 	def search_changed(self):
 		search = str(self.search_gvars.text()).lower()
@@ -70,37 +72,45 @@ class MayaQtExplorer(baseclass):
 		self.set_current_widget(widget)
 
 	def set_current_widget(self, widget):
+		self.child_list.clear()
+		self.parent_list.clear()
+
+		if not widget:
+			return
 
 		ui_path = qt.widgetToPath(widget)
 		widget_type = type(widget).__name__
 		self.current_widget_path.setText(widget_type + " - " + ui_path)
 
 		children = widget.children()
-		self.child_list.clear()
 		for c in children:
 			c_type = type(c).__name__
 			ui_path = qt.widgetToPath(c)
 			self.child_list.addItem(c_type + " - " + ui_path)
 
 		parent = widget.parent()
-		self.parent_list.clear()
 		parent_type = type(parent).__name__
 		self.parent_list.addItem(parent_type + " - " + qt.widgetToPath(parent))
 
 		self.rubber_band_widget(widget)
+
+	def closeEvent(self, event):
+		if self.getSettingsManaged():
+			self.saveSettings()
+		self.band.hide()
 
 	def rubber_band_widget(self, widget):
 		try:
 			self.band.hide();
 		except:
 			pass
-		if self.band is None:
-			self.band = QtGui.QRubberBand(QtGui.QRubberBand.Rectangle, self.maya_window)
-		try:
-			rect = widget.geometry()
-		except:
+		if not hasattr(widget, 'frameGeometry'):
 			return
-		pnt = widget.mapTo(self.maya_window, widget.geometry().topLeft())
-		rect.moveTo(pnt)
-		self.band.setGeometry(rect)
-		self.band.show()
+
+		geometry = widget.frameGeometry()
+		offset = widget.mapTo(self.band.parent(), geometry.topLeft())
+		geometry.moveTo(offset)
+
+		self.band.setGeometry(geometry)
+		if not geometry.isNull():
+			self.band.show()
