@@ -22,6 +22,23 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>gVars containing ui paths</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="search_gvars">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QListWidget" name="gvars_list">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
@@ -50,6 +67,13 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>parent</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QListWidget" name="parent_list">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
@@ -69,11 +93,13 @@
             <property name="selectionMode">
              <enum>QAbstractItemView::SingleSelection</enum>
             </property>
-            <item>
-             <property name="text">
-              <string>parent</string>
-             </property>
-            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>children</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -87,21 +113,6 @@
             <property name="toolTip">
              <string>Children</string>
             </property>
-            <item>
-             <property name="text">
-              <string>test1</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>test2</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>test3</string>
-             </property>
-            </item>
            </widget>
           </item>
          </layout>
@@ -111,9 +122,27 @@
      </layout>
     </item>
     <item>
-     <widget class="QLineEdit" name="current_widget_path">
-      <property name="toolTip">
-       <string>active ui element</string>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>currently active</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="current_widget_path">
+        <property name="toolTip">
+         <string>active ui element</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>code to access widget from gVar (gVars are more reliable than paths)</string>
       </property>
      </widget>
     </item>
